@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07100c" />
+  <meta name="description" content="Portfolio of Darshan Parashuramappa — ESG and Sustainability Data Analyst specializing in climate disclosure, CSRD, GRI, carbon data, and sustainability intelligence." />
+  <meta property="og:title" content="Darshan Parashuramappa — ESG & Sustainability Data Analyst" />
+  <meta property="og:description" content="Climate disclosure, ESG data, reporting frameworks, and sustainability intelligence." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/darshan-portrait.png" />
+  <title>Darshan Parashuramappa — ESG & Sustainability Data Analyst</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #06100c;
+      --bg-deep: #030806;
+      --surface: rgba(13, 27, 20, 0.72);
+      --surface-strong: rgba(16, 34, 25, 0.9);
+      --surface-soft: rgba(255,255,255,.035);
+      --ink: #f4f3ec;
+      --muted: #a8b7ae;
+      --green: #7fdaa0;
+      --green-bright: #a9f1bd;
+      --teal: #78ddd1;
+      --gold: #d8bd75;
+      --gold-soft: #ead9a9;
+      --line: rgba(232, 238, 232, .1);
+      --line-strong: rgba(221, 237, 224, .2);
+      --shadow: 0 28px 90px rgba(0,0,0,.42);
+      --radius: 28px;
+      --radius-sm: 18px;
+      --max: 1240px;
+      --ease: cubic-bezier(.2,.8,.2,1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(80, 154, 104, .16), transparent 28%),
+        radial-gradient(circle at 84% 14%, rgba(81, 145, 138, .12), transparent 24%),
+        radial-gradient(circle at 50% 80%, rgba(134, 109, 50, .08), transparent 30%),
+        linear-gradient(180deg, var(--bg-deep), var(--bg) 26%, #07120d 72%, #050b08);
+      color: var(--ink);
+      font-family: "DM Sans", system-ui, sans-serif;
+      line-height: 1.5;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -4;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(circle at center, #000 26%, transparent 83%);
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 400;
+      opacity: .035;
+      mix-blend-mode: soft-light;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitchTiles'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.8'/%3E%3C/svg%3E");
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    img { display: block; max-width: 100%; }
+    ::selection { background: var(--gold); color: #0b0f0c; }
+
+    #ambientCanvas { position: fixed; inset: 0; z-index: -3; pointer-events: none; }
+    .container { width: min(var(--max), calc(100% - 44px)); margin-inline: auto; }
+    .progress { position: fixed; left: 0; top: 0; width: 100%; height: 3px; z-index: 500; background: rgba(255,255,255,.025); }
+    .progress span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--green), var(--teal), var(--gold)); box-shadow: 0 0 22px rgba(169,241,189,.45); }
+
+    .nav-shell {
+      position: fixed;
+      z-index: 200;
+      left: 22px;
+      right: 22px;
+      top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(5, 13, 9, .64);
+      backdrop-filter: blur(22px) saturate(125%);
+      box-shadow: 0 18px 70px rgba(0,0,0,.24);
+      transition: .4s var(--ease);
+    }
+    .nav-shell.scrolled { top: 10px; background: rgba(5, 13, 9, .84); }
+    .nav {
+      width: min(var(--max), calc(100vw - 44px));
+      min-height: 68px;
+      margin-inline: auto;
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-mark {
+      width: 44px; height: 44px; border-radius: 15px;
+      display: grid; place-items: center;
+      background: linear-gradient(145deg, rgba(169,241,189,.24), rgba(216,189,117,.11));
+      border: 1px solid var(--line-strong);
+      font: 700 1rem "Manrope", sans-serif;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 12px 30px rgba(0,0,0,.26);
+    }
+    .brand-text { font-family: "Manrope", sans-serif; font-weight: 700; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .brand-text small { display: block; color: var(--muted); font-size: .68rem; text-transform: uppercase; letter-spacing: .13em; font-weight: 600; margin-top: 2px; }
+    .nav-links { display: flex; align-items: center; gap: 20px; }
+    .nav-links > a { color: #d9e1dc; font-size: .9rem; opacity: .76; transition: .25s ease; position: relative; }
+    .nav-links > a::after { content:""; position:absolute; left:0; bottom:-8px; width:100%; height:1px; background:linear-gradient(90deg, transparent, var(--gold), transparent); transform:scaleX(0); transition:.3s var(--ease); }
+    .nav-links > a:hover { opacity: 1; }
+    .nav-links > a:hover::after { transform: scaleX(1); }
+    .nav-linkedin { padding: 11px 15px; border-radius: 14px; border: 1px solid var(--line-strong); background: rgba(255,255,255,.04); opacity: 1 !important; }
+    .nav-toggle { display: none; width: 44px; height: 44px; border-radius: 14px; color: var(--ink); border: 1px solid var(--line); background: rgba(255,255,255,.035); cursor:pointer; }
+
+    .hero { min-height: 100svh; display: grid; align-items: center; padding: 138px 0 72px; position: relative; }
+    .hero-grid { display: grid; grid-template-columns: 1.02fr .98fr; align-items: center; gap: 58px; }
+    .kicker {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: rgba(255,255,255,.035);
+      color: #dceae1;
+      font: 700 .73rem "Manrope", sans-serif;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .kicker i { width: 8px; height: 8px; border-radius: 50%; background: var(--green-bright); box-shadow: 0 0 20px rgba(169,241,189,.75); animation: pulse 2.2s ease-in-out infinite; }
+    .hero h1 {
+      max-width: 11ch;
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(3.1rem, 7vw, 6.35rem);
+      line-height: .96;
+      letter-spacing: -.065em;
+      text-wrap: balance;
+    }
+    .hero h1 em {
+      font-family: "Playfair Display", serif;
+      font-weight: 500;
+      background: linear-gradient(135deg, #fff 4%, var(--green-bright) 43%, var(--teal) 72%, var(--gold-soft));
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .hero-lead { max-width: 63ch; margin-top: 24px; color: var(--muted); font-size: 1.075rem; line-height: 1.82; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 28px; }
+    .button {
+      min-height: 51px;
+      padding: 0 19px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 15px;
+      border: 1px solid var(--line-strong);
+      font: 700 .91rem "Manrope", sans-serif;
+      transition: .32s var(--ease);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .button::before { content:""; position:absolute; inset:0; z-index:-1; transform:translateX(-120%) skewX(-20deg); background:linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent); transition:.7s var(--ease); }
+    .button:hover::before { transform: translateX(120%) skewX(-20deg); }
+    .button:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(0,0,0,.3); }
+    .button-primary { background: linear-gradient(135deg, #abf0bf, #7fd7c8 68%, #e7cb89); color: #07130c; border-color: transparent; }
+    .button-dark { background: rgba(255,255,255,.045); backdrop-filter: blur(12px); }
+    .button-gold { border-color: rgba(216,189,117,.34); color: var(--gold-soft); background: rgba(216,189,117,.055); }
+    .button svg { width: 18px; height: 18px; }
+
+    .hero-facts { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-top: 30px; }
+    .fact {
+      padding: 15px 16px;
+      border-radius: 17px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+    }
+    .fact b { display: block; font-family: "Manrope", sans-serif; font-size: .9rem; margin-bottom: 4px; }
+    .fact span { display: block; color: var(--muted); font-size: .79rem; line-height: 1.45; }
+
+    .portrait-stage { min-height: 640px; position: relative; display: grid; place-items: center; perspective: 1400px; }
+    .portrait-frame {
+      position: relative;
+      width: min(100%, 550px);
+      aspect-ratio: .92 / 1;
+      border-radius: 44px;
+      transform-style: preserve-3d;
+      transition: transform .22s ease-out;
+    }
+    .portrait-frame::before {
+      content: "";
+      position: absolute;
+      inset: -22px;
+      border-radius: 58px;
+      background: conic-gradient(from 45deg, transparent, rgba(169,241,189,.28), transparent 20%, rgba(216,189,117,.18), transparent 55%, rgba(120,221,209,.2), transparent 84%);
+      filter: blur(22px);
+      opacity: .65;
+      animation: halo 12s linear infinite;
+    }
+    .portrait-frame::after {
+      content:"";
+      position:absolute;
+      inset:-8px;
+      border-radius:50px;
+      border:1px solid rgba(255,255,255,.09);
+      transform: translateZ(-30px);
+    }
+    .portrait-window {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: 44px;
+      background: #0d1511;
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.09);
+      transform: translateZ(24px);
+    }
+    .portrait-window img { width: 100%; height: 100%; object-fit: cover; object-position: center 24%; transform: scale(1.035); transition: transform 1.2s var(--ease), filter 1.2s var(--ease); filter: saturate(.92) contrast(1.03); }
+    .portrait-window:hover img { transform: scale(1.075); filter: saturate(1.05) contrast(1.05); }
+    .portrait-window .shade { position:absolute; inset:0; background: linear-gradient(180deg, transparent 58%, rgba(3,8,6,.58)), radial-gradient(circle at 48% 26%, transparent 20%, rgba(0,0,0,.16) 75%); pointer-events:none; }
+    .portrait-window .scan { position:absolute; inset:-100% -30%; transform:rotate(18deg); background:linear-gradient(90deg, transparent, rgba(255,255,255,.09), transparent); animation:scan 6.8s ease-in-out infinite; pointer-events:none; }
+    .portrait-caption { position:absolute; left:22px; right:22px; bottom:20px; z-index:2; padding:16px 17px; display:flex; align-items:center; justify-content:space-between; gap:14px; border:1px solid rgba(255,255,255,.12); border-radius:18px; background:rgba(5,13,9,.58); backdrop-filter:blur(18px); }
+    .portrait-caption b { font-family:"Manrope",sans-serif; font-size:.95rem; }
+    .portrait-caption span { display:block; color:var(--muted); font-size:.77rem; margin-top:2px; }
+    .available { display:flex; align-items:center; gap:8px; color:#dff6e6; white-space:nowrap; font-size:.78rem; }
+    .available::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 16px rgba(127,218,160,.75); }
+    .orbit-line { position:absolute; border:1px solid rgba(255,255,255,.11); border-radius:50%; pointer-events:none; }
+    .orbit-one { inset:8% -11%; transform:translateZ(-55px) rotateX(72deg) rotateZ(8deg); animation:orbit 18s linear infinite; }
+    .orbit-two { inset:-7% 13%; transform:translateZ(-75px) rotateY(73deg) rotateZ(-5deg); animation:orbit 22s linear infinite reverse; }
+    .float-label { position:absolute; z-index:6; min-width:146px; padding:13px 15px; border-radius:16px; border:1px solid var(--line-strong); background:rgba(7,18,13,.7); backdrop-filter:blur(18px); box-shadow:0 18px 50px rgba(0,0,0,.3); font-size:.78rem; font-weight:700; letter-spacing:.02em; animation:float 6.5s ease-in-out infinite; }
+    .float-label small { display:block; color:var(--muted); font-size:.67rem; font-weight:500; margin-top:4px; line-height:1.4; }
+    .label-a { left:-7%; top:13%; transform:translateZ(92px); }
+    .label-b { right:-8%; top:31%; transform:translateZ(130px); animation-delay:-1.5s; }
+    .label-c { left:-6%; bottom:12%; transform:translateZ(80px); animation-delay:-3s; }
+
+    .marquee-shell { overflow:hidden; border-block:1px solid var(--line); background:rgba(255,255,255,.018); }
+    .marquee { min-width:max-content; display:flex; align-items:center; gap:24px; padding:16px 0; animation:marquee 30s linear infinite; }
+    .marquee span { display:inline-flex; align-items:center; gap:24px; color:#c6d1ca; font:600 .8rem "Manrope",sans-serif; letter-spacing:.13em; text-transform:uppercase; }
+    .marquee span::after { content:"✦"; color:var(--gold); font-size:.7rem; }
+
+    section { padding: 96px 0; position: relative; }
+    .section-heading { display:grid; grid-template-columns:1fr 1fr; gap:36px; align-items:end; margin-bottom:36px; }
+    .eyebrow { color:var(--gold); font:700 .72rem "Manrope",sans-serif; letter-spacing:.16em; text-transform:uppercase; margin-bottom:11px; }
+    h2 { max-width:12ch; font:700 clamp(2.2rem,4.5vw,4rem)/1.03 "Manrope",sans-serif; letter-spacing:-.05em; }
+    h2 em { font-family:"Playfair Display",serif; font-weight:500; color:var(--gold-soft); }
+    .section-intro { color:var(--muted); max-width:58ch; line-height:1.82; justify-self:end; }
+
+    .glass { position:relative; overflow:hidden; border:1px solid var(--line); border-radius:var(--radius); background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02)); backdrop-filter:blur(18px); box-shadow:var(--shadow); }
+    .glass::before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 85% 0%,rgba(169,241,189,.075),transparent 32%); pointer-events:none; }
+    .tilt { transform-style:preserve-3d; transition:transform .2s ease-out, border-color .3s ease, box-shadow .3s ease; }
+    .tilt:hover { border-color:var(--line-strong); }
+
+    .profile-grid { display:grid; grid-template-columns:.78fr 1.22fr; gap:24px; }
+    .full-photo { min-height:720px; position:relative; background:linear-gradient(180deg,#121713,#080d0a); }
+    .full-photo img { width:100%; height:100%; object-fit:cover; object-position:center top; transition:1.2s var(--ease); }
+    .full-photo:hover img { transform:scale(1.025); }
+    .full-photo::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent 62%,rgba(3,8,6,.7)); pointer-events:none; }
+    .photo-note { position:absolute; z-index:2; left:22px; right:22px; bottom:22px; display:flex; justify-content:space-between; align-items:end; gap:16px; padding:18px; border-radius:18px; border:1px solid rgba(255,255,255,.12); background:rgba(6,15,10,.62); backdrop-filter:blur(18px); }
+    .photo-note b { font:700 1.05rem "Manrope",sans-serif; }
+    .photo-note span { color:var(--muted); display:block; font-size:.8rem; margin-top:4px; }
+    .profile-copy { padding:38px; display:flex; flex-direction:column; justify-content:center; }
+    .profile-copy h3 { font:700 clamp(1.8rem,3vw,2.6rem)/1.12 "Manrope",sans-serif; letter-spacing:-.035em; max-width:15ch; }
+    .profile-copy > p { margin-top:20px; color:var(--muted); line-height:1.9; }
+    .signature { margin-top:22px; font:500 2rem "Playfair Display",serif; color:var(--gold-soft); }
+    .profile-points { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:26px; }
+    .point { padding:16px; border:1px solid var(--line); border-radius:16px; background:rgba(255,255,255,.025); }
+    .point b { display:block; font:700 .92rem "Manrope",sans-serif; margin-bottom:5px; }
+    .point span { color:var(--muted); font-size:.83rem; line-height:1.5; }
+
+    .impact-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
+    .metric { min-height:220px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; }
+    .metric-number { font:700 3.4rem/1 "Manrope",sans-serif; letter-spacing:-.06em; background:linear-gradient(135deg,#fff,var(--green-bright),var(--gold)); background-clip:text; -webkit-background-clip:text; color:transparent; }
+    .metric h3 { font:700 1.02rem "Manrope",sans-serif; margin-top:10px; }
+    .metric p { color:var(--muted); font-size:.88rem; line-height:1.65; margin-top:18px; }
+    .metric-icon { width:46px; height:46px; border-radius:15px; display:grid; place-items:center; border:1px solid var(--line-strong); background:linear-gradient(145deg,rgba(169,241,189,.13),rgba(216,189,117,.08)); }
+
+    .experience-list { display:grid; gap:17px; }
+    .experience-card { padding:29px; display:grid; grid-template-columns:220px 1fr; gap:30px; }
+    .exp-date { color:var(--gold); font:700 .74rem "Manrope",sans-serif; letter-spacing:.14em; text-transform:uppercase; }
+    .exp-meta h3 { font:700 1.18rem "Manrope",sans-serif; margin:9px 0 4px; }
+    .exp-meta p { color:var(--muted); font-size:.9rem; line-height:1.55; }
+    .exp-body ul { padding-left:18px; color:var(--muted); display:grid; gap:8px; line-height:1.72; }
+    .tags { display:flex; flex-wrap:wrap; gap:9px; margin-top:18px; }
+    .tag { padding:8px 11px; border-radius:999px; border:1px solid var(--line); background:rgba(255,255,255,.026); font-size:.76rem; color:#dfe8e2; }
+
+    .skills-layout { display:grid; grid-template-columns:1.04fr .96fr; gap:22px; }
+    .skills-panel { padding:30px; }
+    .skill { padding:17px 0; border-bottom:1px solid var(--line); }
+    .skill:last-child { border-bottom:0; }
+    .skill-head { display:flex; justify-content:space-between; gap:16px; margin-bottom:11px; }
+    .skill-head b { font:700 .93rem "Manrope",sans-serif; }
+    .skill-head span { color:var(--muted); font-size:.79rem; }
+    .bar { height:10px; border-radius:999px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.035); overflow:hidden; }
+    .bar i { display:block; height:100%; width:0; border-radius:inherit; background:linear-gradient(90deg,var(--green),var(--teal),var(--gold)); box-shadow:0 0 20px rgba(127,218,160,.22); transition:width 1.35s var(--ease); }
+    .competency-grid { display:grid; gap:14px; }
+    .competency { padding:24px; min-height:150px; }
+    .competency small { color:var(--gold); font:700 .68rem "Manrope",sans-serif; letter-spacing:.14em; text-transform:uppercase; }
+    .competency h3 { font:700 1.08rem "Manrope",sans-serif; margin:10px 0 7px; }
+    .competency p { color:var(--muted); font-size:.88rem; line-height:1.68; }
+
+    .projects-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:17px; }
+    .project { min-height:350px; padding:25px; display:flex; flex-direction:column; justify-content:space-between; }
+    .project-no { font:700 3.3rem/1 "Manrope",sans-serif; color:rgba(255,255,255,.1); letter-spacing:-.06em; }
+    .project h3 { font:700 1.14rem/1.28 "Manrope",sans-serif; margin:18px 0 10px; }
+    .project p,.project li { color:var(--muted); font-size:.88rem; line-height:1.68; }
+    .project ul { padding-left:18px; display:grid; gap:7px; margin-top:16px; }
+    .project-top { display:flex; align-items:center; justify-content:space-between; }
+
+    .education-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:17px; }
+    .edu { padding:26px; }
+    .edu small { color:var(--gold); font:700 .7rem "Manrope",sans-serif; letter-spacing:.14em; text-transform:uppercase; }
+    .edu h3 { font:700 1.1rem "Manrope",sans-serif; margin:10px 0 7px; }
+    .edu p,.edu li { color:var(--muted); font-size:.88rem; line-height:1.7; }
+    .edu ul { padding-left:18px; display:grid; gap:7px; margin-top:15px; }
+
+    .contact-shell { padding:40px; display:grid; grid-template-columns:1fr .9fr; gap:30px; align-items:center; }
+    .contact-shell h2 { max-width:10ch; }
+    .contact-shell > div > p { color:var(--muted); line-height:1.82; margin-top:18px; max-width:58ch; }
+    .contact-cards { display:grid; gap:11px; }
+    .contact-link { padding:16px 17px; border-radius:16px; border:1px solid var(--line); background:rgba(255,255,255,.027); display:flex; justify-content:space-between; align-items:center; gap:16px; transition:.3s var(--ease); }
+    .contact-link:hover { transform:translateY(-3px); border-color:var(--line-strong); background:rgba(255,255,255,.045); }
+    .contact-link small { display:block; color:var(--gold); font:700 .65rem "Manrope",sans-serif; letter-spacing:.13em; text-transform:uppercase; margin-bottom:3px; }
+    .contact-link b { font-size:.9rem; }
+    .contact-link span { color:var(--muted); font-size:.76rem; }
+    footer { padding:26px 0 42px; }
+    .footer-line { border-top:1px solid var(--line); padding-top:22px; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; color:var(--muted); font-size:.82rem; }
+
+    .reveal { opacity:0; transform:translateY(34px); filter:blur(7px); transition:opacity .8s var(--ease), transform .9s var(--ease), filter .9s var(--ease); }
+    .reveal.visible { opacity:1; transform:none; filter:none; }
+    .reveal-left { opacity:0; transform:translateX(-42px); transition:opacity .85s var(--ease), transform .95s var(--ease); }
+    .reveal-left.visible { opacity:1; transform:none; }
+    .reveal-right { opacity:0; transform:translateX(42px); transition:opacity .85s var(--ease), transform .95s var(--ease); }
+    .reveal-right.visible { opacity:1; transform:none; }
+
+    @keyframes pulse { 50% { opacity:.45; transform:scale(.8); } }
+    @keyframes halo { to { transform:rotate(360deg); } }
+    @keyframes scan { 0%,22%{transform:translateX(-72%) rotate(18deg)} 55%,100%{transform:translateX(72%) rotate(18deg)} }
+    @keyframes orbit { to { rotate:1turn; } }
+    @keyframes float { 0%,100%{translate:0 0} 50%{translate:0 -13px} }
+    @keyframes marquee { to { transform:translateX(-50%); } }
+
+    @media (max-width: 1080px) {
+      .hero-grid,.profile-grid,.skills-layout,.contact-shell { grid-template-columns:1fr; }
+      .hero-copy { max-width:850px; }
+      .portrait-stage { min-height:610px; }
+      .section-heading { grid-template-columns:1fr; }
+      .section-intro { justify-self:start; }
+      .impact-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .projects-grid { grid-template-columns:1fr 1fr; }
+      .full-photo { min-height:850px; }
+    }
+    @media (max-width: 830px) {
+      .nav-shell { left:12px; right:12px; top:12px; }
+      .nav { width:calc(100vw - 24px); flex-wrap:wrap; }
+      .nav-toggle { display:grid; place-items:center; }
+      .nav-links { width:100%; display:none; flex-direction:column; align-items:flex-start; padding:10px 3px 7px; }
+      .nav-links.open { display:flex; }
+      .hero { padding-top:132px; }
+      .hero-facts { grid-template-columns:1fr; }
+      .experience-card { grid-template-columns:1fr; gap:18px; }
+      .projects-grid,.education-grid { grid-template-columns:1fr; }
+      .profile-points { grid-template-columns:1fr; }
+      .full-photo { min-height:720px; }
+    }
+    @media (max-width: 580px) {
+      .container { width:min(var(--max),calc(100% - 28px)); }
+      .brand-text { max-width:210px; }
+      .brand-text small { display:none; }
+      .hero h1 { font-size:clamp(2.7rem,13vw,4.2rem); }
+      .portrait-stage { min-height:510px; }
+      .portrait-frame { width:94%; border-radius:32px; }
+      .portrait-window { border-radius:32px; }
+      .float-label { min-width:auto; max-width:150px; padding:10px 11px; font-size:.7rem; }
+      .label-a { left:-1%; top:8%; }
+      .label-b { right:-1%; top:30%; }
+      .label-c { left:0; bottom:8%; }
+      .impact-grid { grid-template-columns:1fr; }
+      .full-photo { min-height:600px; }
+      .profile-copy,.contact-shell { padding:24px; }
+      .section-heading { margin-bottom:26px; }
+      section { padding:72px 0; }
+      .hero-actions .button { width:100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
+      .reveal,.reveal-left,.reveal-right { opacity:1!important; transform:none!important; filter:none!important; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="ambientCanvas" aria-hidden="true"></canvas>
+  <div class="progress"><span id="progressBar"></span></div>
+
+  <nav class="nav-shell" id="navShell">
+    <div class="nav">
+      <a href="#top" class="brand" aria-label="Go to top">
+        <div class="brand-mark">DP</div>
+        <div class="brand-text">Darshan Parashuramappa<small>ESG & Sustainability Data Analyst</small></div>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Open navigation">☰</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#profile">Profile</a>
+        <a href="#impact">Impact</a>
+        <a href="#experience">Experience</a>
+        <a href="#expertise">Expertise</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        <a class="nav-linkedin" href="https://www.linkedin.com/in/darshan-parashuramappa-22899b181" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="container hero-grid">
+      <div class="hero-copy reveal-left">
+        <div class="kicker"><i></i> ESG • Climate • Sustainability Intelligence</div>
+        <h1>Making <em>sustainability data</em> decision-ready.</h1>
+        <p class="hero-lead">
+          I connect climate disclosure, ESG metrics, reporting frameworks, and analytical workflows — turning complex sustainability information into clear evidence, reliable data structures, and business-ready insight.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="assets/Darshan_Parashuramappa_CV.pdf" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 20h14"/></svg>
+            Download CV
+          </a>
+          <a class="button button-dark" href="https://www.linkedin.com/in/darshan-parashuramappa-22899b181" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 8.5H3.56V19h3.38V8.5ZM5.25 3a1.96 1.96 0 1 0 0 3.92A1.96 1.96 0 0 0 5.25 3Zm7.1 5.5H9.12V19h3.23v-5.2c0-1.37.26-2.7 1.96-2.7 1.68 0 1.7 1.57 1.7 2.79V19h3.24v-5.77c0-2.84-.61-5.02-3.93-5.02-1.6 0-2.67.88-3.1 1.71h-.04V8.5Z"/></svg>
+            LinkedIn
+          </a>
+          <a class="button button-gold" href="mailto:1998darshanp@gmail.com">Start a conversation</a>
+        </div>
+        <div class="hero-facts">
+          <div class="fact"><b>Cottbus, Germany</b><span>Open to relocation across Germany and Europe.</span></div>
+          <div class="fact"><b>Reporting fluency</b><span>CSRD, ESRS, GRI, IFRS, EU Taxonomy, SBTi and GHG Protocol.</span></div>
+          <div class="fact"><b>Data focus</b><span>Metric mapping, validation, extraction workflows and sustainability analysis.</span></div>
+        </div>
+      </div>
+
+      <div class="portrait-stage reveal-right" id="portraitStage">
+        <div class="portrait-frame" id="portraitFrame">
+          <div class="orbit-line orbit-one"></div>
+          <div class="orbit-line orbit-two"></div>
+          <div class="portrait-window">
+            <img src="assets/darshan-portrait.png" alt="Professional portrait of Darshan Parashuramappa" />
+            <div class="shade"></div>
+            <div class="scan"></div>
+            <div class="portrait-caption">
+              <div><b>Darshan Parashuramappa</b><span>ESG & Sustainability Data Analyst</span></div>
+              <div class="available">Open to relocation</div>
+            </div>
+          </div>
+          <div class="float-label label-a">Disclosure Intelligence<small>Framework mapping and evidence-led analysis</small></div>
+          <div class="float-label label-b">Climate Data<small>Scope 1–3, targets and reporting quality</small></div>
+          <div class="float-label label-c">Business Insight<small>From complex reports to clear decisions</small></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="marquee-shell" aria-label="Skills marquee">
+    <div class="marquee">
+      <span>CSRD</span><span>ESRS</span><span>GRI</span><span>EU Taxonomy</span><span>GHG Protocol</span><span>Scope 1–3</span><span>Power BI</span><span>Excel</span><span>Double Materiality</span><span>IFRS Sustainability</span><span>Net-Zero Tracking</span><span>Stakeholder Engagement</span>
+      <span>CSRD</span><span>ESRS</span><span>GRI</span><span>EU Taxonomy</span><span>GHG Protocol</span><span>Scope 1–3</span><span>Power BI</span><span>Excel</span><span>Double Materiality</span><span>IFRS Sustainability</span><span>Net-Zero Tracking</span><span>Stakeholder Engagement</span>
+    </div>
+  </div>
+
+  <main>
+    <section id="profile">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div><div class="eyebrow">Profile</div><h2>Technical depth with a <em>clear business lens.</em></h2></div>
+          <p class="section-intro">My work sits where environmental knowledge, climate regulation, and structured data meet. I focus on extracting the right evidence, improving consistency, and communicating sustainability performance in a way teams can use.</p>
+        </div>
+        <div class="profile-grid">
+          <figure class="glass full-photo reveal-left">
+            <img src="assets/darshan-full.png" alt="Full-length professional portrait of Darshan Parashuramappa" loading="lazy" />
+            <figcaption class="photo-note"><div><b>Professional profile</b><span>Environmental management • ESG analytics • Reporting</span></div><span>Germany</span></figcaption>
+          </figure>
+          <article class="glass profile-copy reveal-right">
+            <div class="eyebrow">About me</div>
+            <h3>Turning fragmented sustainability information into reliable intelligence.</h3>
+            <p>I combine an M.Sc. in Environmental & Resource Management with practical experience in ESG data analysis, climate target review, sustainability reporting, and stakeholder communication. My work has included building metric structures, supporting AI-assisted extraction, validating disclosure evidence, and translating reporting frameworks into operational workflows.</p>
+            <p>I am particularly interested in roles where ESG data quality, carbon accounting, reporting readiness, and analytical storytelling must work together — not as separate tasks, but as one connected decision system.</p>
+            <div class="profile-points">
+              <div class="point"><b>Analytical</b><span>Structured research, data validation, KPI mapping, and evidence review.</span></div>
+              <div class="point"><b>Cross-functional</b><span>Comfortable translating technical requirements for business stakeholders.</span></div>
+              <div class="point"><b>Framework-aware</b><span>CSRD, ESRS, GRI, IFRS, SBTi, EU Taxonomy, and GHG Protocol.</span></div>
+              <div class="point"><b>Mobility</b><span>Currently based in Cottbus and open to relocation.</span></div>
+            </div>
+            <div class="signature">Darshan Parashuramappa</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="impact">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div><div class="eyebrow">Selected impact</div><h2>Work measured through <em>clarity, speed, and quality.</em></h2></div>
+          <p class="section-intro">A snapshot of outcomes across ESG extraction, reporting workflows, target review, and international sustainability engagement.</p>
+        </div>
+        <div class="impact-grid">
+          <article class="glass metric tilt reveal"><div class="metric-icon">↗</div><div><div class="metric-number" data-count="100" data-suffix="+">0</div><h3>ESG reports processed</h3></div><p>Supported AI-assisted extraction and structured integration across a large reporting portfolio.</p></article>
+          <article class="glass metric tilt reveal"><div class="metric-icon">✓</div><div><div class="metric-number" data-count="40" data-suffix="+">0</div><h3>Corporate reports validated</h3></div><p>Reviewed sustainability reports and climate disclosures for reliable tracking and dashboard quality.</p></article>
+          <article class="glass metric tilt reveal"><div class="metric-icon">⚡</div><div><div class="metric-number" data-count="50" data-suffix="%">0</div><h3>Faster portfolio analysis</h3></div><p>Accelerated ESG data integration through structured workflows and LLM-assisted extraction.</p></article>
+          <article class="glass metric tilt reveal"><div class="metric-icon">◎</div><div><div class="metric-number" data-count="28">0</div><h3>Countries reached</h3></div><p>Contributed to global sustainability workshops and stakeholder engagement programs.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div><div class="eyebrow">Experience</div><h2>From climate reports to <em>actionable systems.</em></h2></div>
+          <p class="section-intro">Experience spanning ESG data engineering, climate disclosure quality, stakeholder engagement, and sustainability operations.</p>
+        </div>
+        <div class="experience-list">
+          <article class="glass experience-card tilt reveal">
+            <div class="exp-meta"><div class="exp-date">September 2025 — Present</div><h3>ESG Data Analyst</h3><p>Climate Accountability API · Berlin, Germany</p></div>
+            <div class="exp-body"><ul><li>Engineered audit-ready ESG data pipelines mapping internal metrics to GRI, CSRD, and ESRS requirements.</li><li>Leveraged Gemini 2.5 Flash to automate ESG integration from 100+ reports, improving portfolio analysis speed by more than 50%.</li><li>Designed structures for double materiality assessments and audited ESG methodology logic for stronger data consistency.</li></ul><div class="tags"><span class="tag">ESG data pipelines</span><span class="tag">LLM extraction</span><span class="tag">Double materiality</span><span class="tag">CSRD / ESRS</span></div></div>
+          </article>
+          <article class="glass experience-card tilt reveal">
+            <div class="exp-meta"><div class="exp-date">May 2025 — March 2026</div><h3>Sustainability Data Analyst</h3><p>Net Zero Tracker · London, United Kingdom</p></div>
+            <div class="exp-body"><ul><li>Quality-assured and validated 40+ global corporate sustainability reports against the GHG Protocol.</li><li>Reviewed climate targets, scope coverage, interim ambition, and source evidence for transparent corporate tracking.</li><li>Researched emerging renewable and decarbonization technologies for internal sustainability insight.</li></ul><div class="tags"><span class="tag">Net-zero targets</span><span class="tag">GHG Protocol</span><span class="tag">Evidence validation</span></div></div>
+          </article>
+          <article class="glass experience-card tilt reveal">
+            <div class="exp-meta"><div class="exp-date">November 2023 — March 2024</div><h3>Sustainability Team Lead Intern</h3><p>Greenie Web · Singapore</p></div>
+            <div class="exp-body"><ul><li>Coordinated sustainability digitalization workshops across 28 countries with strong client participation.</li><li>Led cross-functional sustainability campaigns and supported stakeholder-facing communication materials.</li><li>Improved ESG documentation, reporting consistency, and collaborative workflows across teams.</li></ul><div class="tags"><span class="tag">Global workshops</span><span class="tag">Digital sustainability</span><span class="tag">Stakeholder engagement</span></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="expertise">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div><div class="eyebrow">Expertise</div><h2>A capability stack built for <em>modern reporting teams.</em></h2></div>
+          <p class="section-intro">The strongest value comes from connecting frameworks, source evidence, data operations, and communication into one consistent workflow.</p>
+        </div>
+        <div class="skills-layout">
+          <div class="glass skills-panel reveal-left">
+            <div class="skill"><div class="skill-head"><b>ESG frameworks & disclosure mapping</b><span>Advanced</span></div><div class="bar"><i data-width="94"></i></div></div>
+            <div class="skill"><div class="skill-head"><b>Data extraction, validation & structuring</b><span>Advanced</span></div><div class="bar"><i data-width="93"></i></div></div>
+            <div class="skill"><div class="skill-head"><b>Carbon accounting & Scope 1–3 analysis</b><span>Strong</span></div><div class="bar"><i data-width="88"></i></div></div>
+            <div class="skill"><div class="skill-head"><b>Excel, Power BI & analytical reporting</b><span>Strong</span></div><div class="bar"><i data-width="89"></i></div></div>
+            <div class="skill"><div class="skill-head"><b>Stakeholder communication & workshops</b><span>Strong</span></div><div class="bar"><i data-width="87"></i></div></div>
+          </div>
+          <div class="competency-grid reveal-right">
+            <article class="glass competency tilt"><small>Frameworks</small><h3>Reporting architecture</h3><p>CSRD, ESRS, GRI, IFRS S2, EU Taxonomy, TCFD, SBTi, ISO 14001 and GHG Protocol familiarity.</p></article>
+            <article class="glass competency tilt"><small>Analytics</small><h3>Data quality and automation</h3><p>Excel, Power BI, LLM-supported extraction, structured metric references, QA, validation, and scalable reporting workflows.</p></article>
+            <article class="glass competency tilt"><small>Business value</small><h3>Decision-focused communication</h3><p>Translating technical sustainability requirements into clear insights, presentations, and stakeholder-ready recommendations.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div><div class="eyebrow">Selected projects</div><h2>Where research becomes <em>repeatable practice.</em></h2></div>
+          <p class="section-intro">A selection of project themes reflecting the type of sustainability problems I enjoy solving.</p>
+        </div>
+        <div class="projects-grid">
+          <article class="glass project tilt reveal"><div><div class="project-top"><span class="tag">Data system</span><div class="project-no">01</div></div><h3>ESG metric extraction and standards mapping</h3><p>Structured a framework-aware approach for locating, validating, and mapping sustainability metrics across differently written reports.</p></div><ul><li>GRI, CSRD, ESRS, and IFRS alignment</li><li>Keyword and evidence logic</li><li>LLM-ready extraction guidance</li></ul></article>
+          <article class="glass project tilt reveal"><div><div class="project-top"><span class="tag">Climate analysis</span><div class="project-no">02</div></div><h3>Corporate net-zero target review</h3><p>Evaluated end targets, interim milestones, scope coverage, base years, and disclosure credibility across corporate reports.</p></div><ul><li>Target evidence verification</li><li>Scope 1–3 interpretation</li><li>Dashboard quality assurance</li></ul></article>
+          <article class="glass project tilt reveal"><div><div class="project-top"><span class="tag">Engagement</span><div class="project-no">03</div></div><h3>Digital sustainability workshops</h3><p>Supported global engagement programs combining sustainability communication, practical guidance, and cross-functional delivery.</p></div><ul><li>28-country audience</li><li>Stakeholder-facing materials</li><li>Digital impact awareness</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div><div class="eyebrow">Education & learning</div><h2>Environmental expertise with an <em>engineering foundation.</em></h2></div>
+          <p class="section-intro">Formal education and applied learning supporting climate, ESG, data, and reporting-oriented roles.</p>
+        </div>
+        <div class="education-grid">
+          <article class="glass edu tilt reveal"><small>Master’s degree</small><h3>M.Sc. Environmental & Resource Management</h3><p>Brandenburg University of Technology Cottbus-Senftenberg · 2021–2025</p><ul><li>CSR, environmental management, circular economy, LCA, carbon accounting, renewable energy, and sustainability reporting.</li><li>Thesis on adoption of sustainable agricultural practices.</li></ul></article>
+          <article class="glass edu tilt reveal"><small>Bachelor’s degree</small><h3>B.E. Civil Engineering</h3><p>Visvesvaraya Technological University · 2016–2020</p><ul><li>Technical and analytical foundation relevant to infrastructure, resource use, and environmental performance.</li><li>Project work on soil stabilization using waste materials.</li></ul></article>
+          <article class="glass edu tilt reveal"><small>Selected learning</small><h3>Professional development</h3><ul><li>ISO 14001 Environmental Management System</li><li>IFRS sustainability disclosure standards</li><li>Power BI and ESG risk assessment simulations</li><li>Life Cycle Assessment and carbon policy topics</li></ul></article>
+          <article class="glass edu tilt reveal"><small>Positioning</small><h3>Roles of interest</h3><ul><li>ESG / Sustainability Data Analyst</li><li>Climate or Carbon Analyst</li><li>CSRD / Reporting Associate</li><li>Sustainability Strategy and Research roles</li><li>Open to relocation</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="glass contact-shell reveal">
+          <div><div class="eyebrow">Contact</div><h2>Let’s make sustainability data <em>useful.</em></h2><p>For ESG reporting, sustainability data, climate disclosure, carbon analysis, or research-oriented opportunities, connect through email or LinkedIn. My CV is also available directly from this portfolio.</p><div class="hero-actions"><a class="button button-primary" href="assets/Darshan_Parashuramappa_CV.pdf" download>Download CV</a><a class="button button-dark" href="mailto:1998darshanp@gmail.com">Email me</a></div></div>
+          <div class="contact-cards">
+            <a class="contact-link" href="mailto:1998darshanp@gmail.com"><div><small>Email</small><b>1998darshanp@gmail.com</b></div><span>Send message ↗</span></a>
+            <a class="contact-link" href="tel:+491781011550"><div><small>Phone</small><b>+49 178 1011550</b></div><span>Call ↗</span></a>
+            <a class="contact-link" href="https://www.linkedin.com/in/darshan-parashuramappa-22899b181" target="_blank" rel="noopener"><div><small>LinkedIn</small><b>Darshan Parashuramappa</b></div><span>View profile ↗</span></a>
+            <div class="contact-link"><div><small>Location</small><b>Cottbus, Brandenburg, Germany</b></div><span>Open to relocation</span></div>
+          </div>
+        </div>
+        <footer><div class="footer-line"><span>© 2026 Darshan Parashuramappa</span><span>ESG • Climate • Sustainability Intelligence</span></div></footer>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = matchMedia('(pointer: fine)').matches;
+    const navShell = document.getElementById('navShell');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    const progressBar = document.getElementById('progressBar');
+
+    navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    function updateScrollUI() {
+      navShell.classList.toggle('scrolled', scrollY > 40);
+      const max = document.documentElement.scrollHeight - innerHeight;
+      progressBar.style.width = `${max > 0 ? scrollY / max * 100 : 0}%`;
+    }
+    addEventListener('scroll', updateScrollUI, { passive: true });
+    updateScrollUI();
+
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .14 });
+    document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => revealObserver.observe(el));
+
+    const countObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = Number(el.dataset.count || 0);
+        const suffix = el.dataset.suffix || '';
+        const start = performance.now();
+        const duration = 1450;
+        function frame(now) {
+          const p = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * eased) + suffix;
+          if (p < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+        countObserver.unobserve(el);
+      });
+    }, { threshold: .5 });
+    document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
+
+    const barObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.width = entry.target.dataset.width + '%';
+          barObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .45 });
+    document.querySelectorAll('.bar i').forEach(el => barObserver.observe(el));
+
+    if (finePointer && !reduced) {
+      document.querySelectorAll('.tilt').forEach(card => {
+        card.addEventListener('pointermove', e => {
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width - .5;
+          const y = (e.clientY - r.top) / r.height - .5;
+          card.style.transform = `perspective(900px) rotateX(${y * -7}deg) rotateY(${x * 9}deg) translateY(-4px)`;
+          card.style.boxShadow = '0 34px 90px rgba(0,0,0,.46)';
+        });
+        card.addEventListener('pointerleave', () => {
+          card.style.transform = '';
+          card.style.boxShadow = '';
+        });
+      });
+
+      const stage = document.getElementById('portraitStage');
+      const frame = document.getElementById('portraitFrame');
+      stage.addEventListener('pointermove', e => {
+        const r = stage.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - .5;
+        const y = (e.clientY - r.top) / r.height - .5;
+        frame.style.transform = `rotateX(${y * -10}deg) rotateY(${x * 13}deg) translateY(-4px)`;
+      });
+      stage.addEventListener('pointerleave', () => frame.style.transform = '');
+    }
+
+    const canvas = document.getElementById('ambientCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [], w = 0, h = 0, dpr = 1;
+    function resizeCanvas() {
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      w = innerWidth; h = innerHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      particles = Array.from({ length: Math.max(32, Math.floor(w / 30)) }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.8 + .35,
+        vx: (Math.random() - .5) * .18,
+        vy: -Math.random() * .22 - .04,
+        a: Math.random() * .5 + .12,
+        gold: Math.random() > .78
+      }));
+    }
+    function draw(time) {
+      ctx.clearRect(0,0,w,h);
+      const glow = ctx.createRadialGradient(w*.77,h*.18,0,w*.77,h*.18,w*.38);
+      glow.addColorStop(0,'rgba(99,180,153,.09)'); glow.addColorStop(1,'rgba(99,180,153,0)');
+      ctx.fillStyle = glow; ctx.fillRect(0,0,w,h);
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.y < -12) { p.y = h + 12; p.x = Math.random() * w; }
+        if (p.x < -12) p.x = w + 12;
+        if (p.x > w + 12) p.x = -12;
+        const pulse = .65 + Math.sin(time*.001 + p.x*.01) * .25;
+        const rgb = p.gold ? '216,189,117' : '127,218,160';
+        ctx.beginPath(); ctx.fillStyle = `rgba(${rgb},${p.a*pulse})`; ctx.shadowColor = `rgba(${rgb},.26)`; ctx.shadowBlur = 18; ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+      });
+      ctx.restore();
+      requestAnimationFrame(draw);
+    }
+    resizeCanvas();
+    addEventListener('resize', resizeCanvas);
+    if (!reduced) requestAnimationFrame(draw);
+  </script>
+</body>
+</html>
